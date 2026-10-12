@@ -47,12 +47,12 @@ const Contact = () => {
   ];
 
   const socials = [
-    { label: 'Facebook', handle: '@fitnesshubofficial', color: 'hover:bg-blue-600' },
-    { label: 'Instagram', handle: '@fitnesshub', color: 'hover:bg-pink-600' },
-    { label: 'YouTube', handle: 'Fitness Hub', color: 'hover:bg-red-600' },
-    { label: 'LinkedIn', handle: 'Fitness Hub Pvt Ltd', color: 'hover:bg-blue-700' },
-    { label: 'TikTok', handle: '@fitnesshubpk', color: 'hover:bg-black' },
-    { label: 'Twitter/X', handle: '@fitnesshub', color: 'hover:bg-sky-500' },
+    { label: 'Facebook', handle: '@fitnesshubofficial'},
+    { label: 'Instagram', handle: '@fitnesshub'},
+    { label: 'YouTube', handle: 'Fitness Hub'},
+    { label: 'LinkedIn', handle: 'Fitness Hub Pvt Ltd'},
+    { label: 'TikTok', handle: '@fitnesshubpk'},
+    { label: 'Twitter/X', handle: '@fitnesshub'},
   ];
 
   return (

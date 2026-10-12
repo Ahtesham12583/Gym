@@ -1,5 +1,5 @@
 ﻿import { Link } from 'react-router-dom';
-
+import ahteshamProfile from '../assets/ahtesham-profile.jpg';
 const About = () => {
   const milestones = [
     { year: '2014', title: 'The Beginning', desc: 'Fitness Hub founded by Ahtesham Azhar with a single 2,000 sq. ft. facility and a vision to revolutionize fitness.' },
@@ -72,11 +72,11 @@ const About = () => {
             <div className="lg:col-span-2 relative">
               <div className="relative h-full min-h-[420px]">
                 <div className="absolute -top-3 -left-3 w-full h-full border-2 border-amber rounded-2xl"></div>
-                <img 
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=750&fit=crop" 
-                  alt="Ahtesham Azhar - CEO"
-                  className="relative rounded-2xl w-full h-full min-h-[420px] object-cover object-top shadow-amber-sm border border-amber/30"
-                />
+               <img 
+  src={ahteshamProfile}
+  alt="Ahtesham Azhar - CEO"
+  className="relative rounded-2xl w-full h-full min-h-[420px] object-cover object-top shadow-amber-sm border border-amber/30"
+/>
               </div>
               <div className="absolute -bottom-4 -right-4 bg-amber text-white p-4 rounded-xl shadow-amber animate-pulse-amber">
                 <p className="font-display text-3xl font-bold leading-none">15+</p>

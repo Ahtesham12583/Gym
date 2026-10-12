@@ -1,5 +1,6 @@
 ﻿import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import fitnessHubLogo from '../assets/fitnesshub-logos.png';
 
 const Login = () => {
   const [isRegister, setIsRegister] = useState(false);
@@ -11,6 +12,13 @@ const Login = () => {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [showPass, setShowPass] = useState(false);
+
+
+  const [otpMode, setOtpMode] = useState(false);
+  const [otp, setOtp] = useState('');
+  const [otpError, setOtpError] = useState('');
+  const [otpLoading, setOtpLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const validateLogin = () => {
@@ -38,17 +46,65 @@ const Login = () => {
     return Object.keys(e).length === 0;
   };
 
-  const submit = (e) => {
-    e.preventDefault();
-    const valid = isRegister ? validateRegister() : validateLogin();
-    if (!valid) return;
-    setSubmitting(true);
-    setTimeout(() => {
-      setSubmitting(false);
-      setSuccess(true);
-      setTimeout(() => { setSuccess(false); navigate('/'); }, 2500);
-    }, 1800);
-  };
+
+const submit = async (e) => {
+  e.preventDefault();
+
+  const valid = isRegister ? validateRegister() : validateLogin();
+
+  if (!valid) return;
+  console.log("SUBMIT FUNCTION PASSED VALIDATION ✅");
+
+  setSubmitting(true);
+  setSuccess(false);
+
+  try {
+    if (isRegister) {
+      // Register API
+      const response = await fetch(
+        'http://localhost:5000/api/auth/signup',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: formData.fullName,
+            email: formData.email,
+            password: formData.password,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Registration failed');
+      }
+
+      // OTP screen open
+      setOtpMode(true);
+      setOtp('');
+      setOtpError('');
+      setSuccess(false);
+
+      console.log('OTP sent successfully ✅');
+    } else {
+      // Login abhi baad mein connect karenge
+      setErrors({
+        submit: 'Login API abhi connect nahi hui.',
+      });
+    }
+  } catch (error) {
+    console.log('Error:', error.message);
+
+    setErrors({
+      submit: error.message,
+    });
+  } finally {
+    setSubmitting(false);
+  }
+};
 
   const change = (e) => {
     const { name, value, type, checked } = e.target;
@@ -78,17 +134,13 @@ const Login = () => {
             <div className="absolute top-1/2 right-0 w-80 h-80 bg-neon-red/20 rounded-full blur-[100px]"></div>
 
             <div className="relative">
-              <Link to="/" className="flex items-center gap-3 mb-12">
-                <div className="w-14 h-14 flex items-center justify-center border-2 border-neon-red rounded-xl shadow-amber bg-dark-bg">
-                  <svg viewBox="0 0 24 24" className="w-8 h-8 text-neon-red" fill="currentColor">
-                    <path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43L16.29 22l2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43L22 16.29z"/>
-                  </svg>
-                </div>
-                <div>
-                  <span className="font-display text-3xl font-bold tracking-wider text-white block">FITNESS</span>
-                  <span className="font-display text-2xl font-bold tracking-[0.3em] neon-text -mt-1 block">HUB</span>
-                </div>
-              </Link>
+              <Link to="/" className="inline-flex items-center mb-12 group">
+  <img
+    src={fitnessHubLogo}
+    alt="Fitness Hub FH Logo"
+    className="w-20 h-20 object-contain transition-transform duration-300 group-hover:scale-105"
+  />
+</Link>
 
               <h1 className="font-display text-5xl font-bold uppercase text-white leading-[0.95] mb-6 tracking-tight">
                 Welcome Back,<br/>
@@ -133,16 +185,17 @@ const Login = () => {
           <div className="card-glow p-8 md:p-12 shadow-amber-sm lg:rounded-3xl">
             {/* Mobile brand heading */}
             <div className="lg:hidden flex items-center gap-3 mb-8">
-              <div className="w-12 h-12 flex items-center justify-center border-2 border-neon-red rounded-xl shadow-amber-sm bg-dark-bg">
-                <svg viewBox="0 0 24 24" className="w-7 h-7 text-neon-red" fill="currentColor">
-                  <path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43L16.29 22l2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43L22 16.29z"/>
-                </svg>
-              </div>
-              <div>
-                <span className="font-display text-2xl font-bold tracking-wider text-white block">FITNESS HUB</span>
-                <span className="text-neon-red text-xs uppercase tracking-widest">Member Portal</span>
-              </div>
-            </div>
+  <img
+    src={fitnessHubLogo}
+    alt="Fitness Hub FH Logo"
+    className="w-14 h-14 object-contain"
+  />
+  <div>
+    <span className="text-amber-light text-xs uppercase tracking-widest">
+      Member Portal
+    </span>
+  </div>
+</div>
 
             <div className="flex items-center justify-between mb-8">
               <div>
@@ -185,89 +238,352 @@ const Login = () => {
               </button>
             </div>
 
-            <form onSubmit={submit} className="space-y-5">
-              {isRegister && (
-                <>
-                  <div>
-                    <label className="form-label">Full Name *</label>
-                    <input type="text" name="fullName" value={formData.fullName} onChange={change}
-                           placeholder="e.g. John Doe" className={`input-field ${errors.fullName ? 'border-neon-red' : ''}`}/>
-                    {errors.fullName && <p className="text-neon-red text-sm mt-2">⚠ {errors.fullName}</p>}
-                  </div>
-                  <div>
-                    <label className="form-label">Member ID / Joining Reference *</label>
-                    <input type="text" name="memberId" value={formData.memberId} onChange={change}
-                           placeholder="Provided at gym or FH-XXXXXX" className={`input-field ${errors.memberId ? 'border-neon-red' : ''}`}/>
-                    {errors.memberId && <p className="text-neon-red text-sm mt-2">⚠ {errors.memberId}</p>}
-                  </div>
-                </>
-              )}
+{otpMode ? (
+  <div className="space-y-6">
+    <div className="text-center">
+      <div className="text-5xl mb-4">📧</div>
 
-              <div>
-                <label className="form-label">Email Address *</label>
-                <input type="email" name="email" value={formData.email} onChange={change}
-                       placeholder="you@example.com" className={`input-field ${errors.email ? 'border-neon-red' : ''}`}/>
-                {errors.email && <p className="text-neon-red text-sm mt-2">⚠ {errors.email}</p>}
-              </div>
+      <h2 className="text-2xl font-bold text-white">
+        Verify Your Email
+      </h2>
 
-              <div>
-                <label className="form-label">Password *</label>
-                <div className="relative">
-                  <input type={showPass ? 'text' : 'password'} name="password" value={formData.password} onChange={change}
-                         placeholder={isRegister ? 'Minimum 8 characters' : 'Enter your password'}
-                         className={`input-field pr-12 ${errors.password ? 'border-neon-red' : ''}`}/>
-                  <button type="button" onClick={() => setShowPass(!showPass)}
-                          className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-amber-light text-sm font-bold uppercase">
-                    {showPass ? 'Hide' : 'Show'}
-                  </button>
-                </div>
-                {errors.password && <p className="text-neon-red text-sm mt-2">⚠ {errors.password}</p>}
-              </div>
+      <p className="text-gray-400 text-sm mt-2">
+        We sent a 6-digit OTP to
+      </p>
 
-              {isRegister && (
-                <div>
-                  <label className="form-label">Confirm Password *</label>
-                  <input type={showPass ? 'text' : 'password'} name="confirmPassword" value={formData.confirmPassword} onChange={change}
-                         placeholder="Re-enter password" className={`input-field ${errors.confirmPassword ? 'border-neon-red' : ''}`}/>
-                  {errors.confirmPassword && <p className="text-neon-red text-sm mt-2">⚠ {errors.confirmPassword}</p>}
-                </div>
-              )}
+      <p className="text-neon-red font-semibold mt-1">
+        {formData.email}
+      </p>
+    </div>
 
-              <div className={`flex flex-wrap items-center justify-between gap-4 ${isRegister ? 'pt-2' : ''}`}>
-                <label className="flex items-center gap-3 cursor-pointer group">
-                  <input
-                    type="checkbox" name={isRegister ? 'agree' : 'remember'}
-                    checked={isRegister ? formData.agree : formData.remember} onChange={change}
-                    className="w-5 h-5 rounded border-dark-border bg-dark-bg text-neon-red focus:ring-amber cursor-pointer accent-amber"/>
-                  <span className="text-gray-400 text-sm group-hover:text-gray-200 transition-colors">
-                    {isRegister ? 'I agree to the Terms & Privacy Policy' : 'Remember me for 30 days'}
-                  </span>
-                </label>
-                {!isRegister && (
-                  <a href="#" className="text-neon-red text-sm font-semibold hover:underline">
-                    Forgot Password?
-                  </a>
-                )}
-              </div>
-              {isRegister && errors.agree && <p className="text-neon-red text-sm -mt-3">⚠ {errors.agree}</p>}
+    <div>
+      <label className="form-label">
+        Enter OTP *
+      </label>
 
-              <button
-                type="submit" disabled={submitting || success}
-                className="btn-primary w-full !py-4 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3 animate-pulse-amber"
-              >
-                {submitting ? (
-                  <>
-                    <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
-                    </svg>
-                    Processing...
-                  </>
-                ) : (
-                  <>{isRegister ? 'Create My Account' : 'Sign In To Dashboard'} →</>
-                )}
-              </button>
-            </form>
+      <input
+        type="text"
+        value={otp}
+        onChange={(e) => {
+          const value = e.target.value.replace(/\D/g, '').slice(0, 6);
+          setOtp(value);
+          setOtpError('');
+        }}
+        placeholder="Enter 6-digit OTP"
+        maxLength={6}
+        inputMode="numeric"
+        className={`input-field text-center text-2xl tracking-[0.5em] ${
+          otpError ? 'border-neon-red' : ''
+        }`}
+      />
+
+      {otpError && (
+        <p className="text-neon-red text-sm mt-2">
+          ⚠ {otpError}
+        </p>
+      )}
+    </div>
+
+    <button
+      type="button"
+      disabled={otpLoading || otp.length !== 6}
+      onClick={async () => {
+        if (otp.length !== 6) {
+          setOtpError('Please enter the 6-digit OTP');
+          return;
+        }
+
+        setOtpLoading(true);
+        setOtpError('');
+
+        try {
+          const response = await fetch(
+            'http://localhost:5000/api/auth/verify-otp',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                email: formData.email,
+                otp: otp,
+              }),
+            }
+          );
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.message || 'OTP verification failed');
+          }
+
+          setSuccess(true);
+
+          setTimeout(() => {
+            navigate('/');
+          }, 1500);
+
+        } catch (error) {
+          setOtpError(error.message);
+        } finally {
+          setOtpLoading(false);
+        }
+      }}
+      className="btn-primary w-full !py-4 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+    >
+      {otpLoading ? (
+        <>
+          <svg
+            className="animate-spin w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            />
+          </svg>
+          Verifying...
+        </>
+      ) : (
+        <>Verify Email →</>
+      )}
+    </button>
+
+    <button
+      type="button"
+      onClick={() => {
+        setOtpMode(false);
+        setOtp('');
+        setOtpError('');
+      }}
+      className="w-full text-gray-400 hover:text-white text-sm transition-colors"
+    >
+      ← Back to Registration
+    </button>
+  </div>
+) : (
+  <form onSubmit={submit} className="space-y-5">
+
+    {isRegister && (
+      <>
+        <div>
+          <label className="form-label">Full Name *</label>
+          <input
+            type="text"
+            name="fullName"
+            value={formData.fullName}
+            onChange={change}
+            placeholder="e.g. John Doe"
+            className={`input-field ${
+              errors.fullName ? 'border-neon-red' : ''
+            }`}
+          />
+          {errors.fullName && (
+            <p className="text-neon-red text-sm mt-2">
+              ⚠ {errors.fullName}
+            </p>
+          )}
+        </div>
+
+        <div>
+          <label className="form-label">
+            Member ID / Joining Reference *
+          </label>
+          <input
+            type="text"
+            name="memberId"
+            value={formData.memberId}
+            onChange={change}
+            placeholder="Provided at gym or FH-XXXXXX"
+            className={`input-field ${
+              errors.memberId ? 'border-neon-red' : ''
+            }`}
+          />
+          {errors.memberId && (
+            <p className="text-neon-red text-sm mt-2">
+              ⚠ {errors.memberId}
+            </p>
+          )}
+        </div>
+      </>
+    )}
+
+    <div>
+      <label className="form-label">Email Address *</label>
+      <input
+        type="email"
+        name="email"
+        value={formData.email}
+        onChange={change}
+        placeholder="you@example.com"
+        className={`input-field ${
+          errors.email ? 'border-neon-red' : ''
+        }`}
+      />
+      {errors.email && (
+        <p className="text-neon-red text-sm mt-2">
+          ⚠ {errors.email}
+        </p>
+      )}
+    </div>
+
+    <div>
+      <label className="form-label">Password *</label>
+
+      <div className="relative">
+        <input
+          type={showPass ? 'text' : 'password'}
+          name="password"
+          value={formData.password}
+          onChange={change}
+          placeholder={
+            isRegister
+              ? 'Minimum 8 characters'
+              : 'Enter your password'
+          }
+          className={`input-field pr-12 ${
+            errors.password ? 'border-neon-red' : ''
+          }`}
+        />
+
+        <button
+          type="button"
+          onClick={() => setShowPass(!showPass)}
+          className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-amber-light text-sm font-bold uppercase"
+        >
+          {showPass ? 'Hide' : 'Show'}
+        </button>
+      </div>
+
+      {errors.password && (
+        <p className="text-neon-red text-sm mt-2">
+          ⚠ {errors.password}
+        </p>
+      )}
+    </div>
+
+    {isRegister && (
+      <div>
+        <label className="form-label">
+          Confirm Password *
+        </label>
+
+        <input
+          type={showPass ? 'text' : 'password'}
+          name="confirmPassword"
+          value={formData.confirmPassword}
+          onChange={change}
+          placeholder="Re-enter password"
+          className={`input-field ${
+            errors.confirmPassword ? 'border-neon-red' : ''
+          }`}
+        />
+
+        {errors.confirmPassword && (
+          <p className="text-neon-red text-sm mt-2">
+            ⚠ {errors.confirmPassword}
+          </p>
+        )}
+      </div>
+    )}
+
+    <div
+      className={`flex flex-wrap items-center justify-between gap-4 ${
+        isRegister ? 'pt-2' : ''
+      }`}
+    >
+      <label className="flex items-center gap-3 cursor-pointer group">
+        <input
+          type="checkbox"
+          name={isRegister ? 'agree' : 'remember'}
+          checked={
+            isRegister
+              ? formData.agree
+              : formData.remember
+          }
+          onChange={change}
+          className="w-5 h-5 rounded border-dark-border bg-dark-bg text-neon-red focus:ring-amber cursor-pointer accent-amber"
+        />
+
+        <span className="text-gray-400 text-sm group-hover:text-gray-200 transition-colors">
+          {isRegister
+            ? 'I agree to the Terms & Privacy Policy'
+            : 'Remember me for 30 days'}
+        </span>
+      </label>
+
+      {!isRegister && (
+        <a
+          href="#"
+          className="text-neon-red text-sm font-semibold hover:underline"
+        >
+          Forgot Password?
+        </a>
+      )}
+    </div>
+
+    {isRegister && errors.agree && (
+      <p className="text-neon-red text-sm -mt-3">
+        ⚠ {errors.agree}
+      </p>
+    )}
+
+    {errors.submit && (
+      <p className="text-neon-red text-sm">
+        ⚠ {errors.submit}
+      </p>
+    )}
+
+    <button
+      type="submit"
+      disabled={submitting || success}
+      className="btn-primary w-full !py-4 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3 animate-pulse-amber"
+    >
+      {submitting ? (
+        <>
+          <svg
+            className="animate-spin w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            />
+          </svg>
+          Processing...
+        </>
+      ) : (
+        <>
+          {isRegister
+            ? 'Create My Account'
+            : 'Sign In To Dashboard'} →
+        </>
+      )}
+    </button>
+  </form>
+)}
+
+
 
             {/* Divider */}
             <div className="flex items-center gap-4 my-8">

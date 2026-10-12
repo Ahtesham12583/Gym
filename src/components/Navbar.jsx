@@ -1,24 +1,13 @@
 ﻿import { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-
+import fitnessHubLogo from "../assets/fitnesshub-logo.png";
 const Logo = () => (
-  <Link to="/" className="flex items-center gap-3 group">
-    <div className="relative w-12 h-12 flex items-center justify-center border-2 border-amber rounded-lg 
-                    group-hover:shadow-amber transition-all duration-300 bg-dark-card">
-      <svg viewBox="0 0 24 24" className="w-7 h-7 text-amber-light" fill="currentColor">
-        <path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43L16.29 22l2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43L22 16.29z"/>
-      </svg>
-      <div className="absolute -top-1 -right-1 w-3 h-3 bg-amber rounded-full animate-pulse"></div>
-    </div>
-    <div className="flex flex-col leading-none">
-      <span className="font-display text-2xl font-bold tracking-wider text-white
-                       group-hover:text-gradient transition-all duration-300">
-        FITNESS
-      </span>
-      <span className="font-display text-xl font-bold tracking-[0.3em] amber-text -mt-1">
-        HUB
-      </span>
-    </div>
+  <Link to="/" className="flex items-center group">
+    <img
+      src={fitnessHubLogo}
+      alt="Fitness Hub"
+      className="w-52 h-26 object-contain transition-all duration-300 group-hover:scale-105"
+    />
   </Link>
 );
 
@@ -68,7 +57,7 @@ const Navbar = () => {
                 }
               >
                 {({ isActive }) => (
-                  <>
+                  <> 
                     {link.label}
                     <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-amber 
                                       transition-all duration-300 ${isActive ? 'w-full' : 'w-0'}`}></span>

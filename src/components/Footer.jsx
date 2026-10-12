@@ -1,5 +1,5 @@
 ﻿import { Link } from 'react-router-dom';
-
+import fitnesshubLogo from '../assets/fitnesshub-logos.png';
 const Footer = () => {
   const gymFeatures = [
     '24/7 Access',
@@ -25,11 +25,11 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-16">
           <div className="lg:col-span-1">
             <Link to="/" className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 flex items-center justify-center border-2 border-amber rounded-lg shadow-amber-sm bg-dark-bg">
-                <svg viewBox="0 0 24 24" className="w-7 h-7 text-amber-light" fill="currentColor">
-                  <path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43L16.29 22l2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43L22 16.29z"/>
-                </svg>
-              </div>
+              <img
+                   src={fitnesshubLogo}
+                   alt="Fitness Hub"
+                   className="w-16 h-16 object-contain"
+                    />
               <div>
                 <span className="font-display text-2xl font-bold tracking-wider text-white block">FITNESS</span>
                 <span className="font-display text-xl font-bold tracking-[0.3em] amber-text -mt-1 block">HUB</span>
@@ -39,18 +39,82 @@ const Footer = () => {
               Transform your body, elevate your mind. Fitness Hub is your ultimate destination for building strength, endurance, and a healthier lifestyle.
             </p>
             <div className="flex gap-3">
-              {['f', 'in', 'ig', 'yt'].map((social) => (
-                <a
-                  key={social}
-                  href="#"
-                  className="w-10 h-10 flex items-center justify-center border border-dark-border rounded-lg
-                           text-gray-400 hover:text-amber-light hover:border-amber hover:shadow-amber-sm
-                           transition-all duration-300 font-bold text-sm"
-                >
-                  {social}
-                </a>
-              ))}
-            </div>
+  {/* Facebook */}
+  <a
+    href="#"
+    aria-label="Facebook"
+    className="w-10 h-10 flex items-center justify-center border border-dark-border rounded-lg
+               text-gray-400 hover:text-amber-light hover:border-amber hover:shadow-amber-sm
+               transition-all duration-300"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className="w-5 h-5"
+    >
+      <path d="M14 8h3V4h-3c-3.31 0-5 1.79-5 5v3H6v4h3v8h4v-8h3l1-4h-4V9c0-.67.33-1 1-1z" />
+    </svg>
+  </a>
+
+  {/* LinkedIn */}
+  <a
+    href="#"
+    aria-label="LinkedIn"
+    className="w-10 h-10 flex items-center justify-center border border-dark-border rounded-lg
+               text-gray-400 hover:text-amber-light hover:border-amber hover:shadow-amber-sm
+               transition-all duration-300"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className="w-5 h-5"
+    >
+      <path d="M6.94 8.5H3.56V20h3.38V8.5zM5.25 3A2 2 0 1 0 5.25 7a2 2 0 0 0 0-4zM20.44 13.04c0-3.47-1.85-5.08-4.32-5.08-1.99 0-2.88 1.09-3.38 1.86V8.5H9.36V20h3.38v-6.4c0-1.69.32-3.33 2.42-3.33 2.07 0 2.1 1.94 2.1 3.44V20h3.38l-.2-6.96z" />
+    </svg>
+  </a>
+
+  {/* Instagram */}
+  <a
+    href="#"
+    aria-label="Instagram"
+    className="w-10 h-10 flex items-center justify-center border border-dark-border rounded-lg
+               text-gray-400 hover:text-amber-light hover:border-amber hover:shadow-amber-sm
+               transition-all duration-300"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      className="w-5 h-5"
+    >
+      <rect x="3" y="3" width="18" height="18" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+    </svg>
+  </a>
+
+  {/* YouTube */}
+  <a
+    href="#"
+    aria-label="YouTube"
+    className="w-10 h-10 flex items-center justify-center border border-dark-border rounded-lg
+               text-gray-400 hover:text-amber-light hover:border-amber hover:shadow-amber-sm
+               transition-all duration-300"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className="w-5 h-5"
+    >
+      <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.9V8.1l6.5 3.9-6.5 3.9z" />
+    </svg>
+  </a>
+</div>
           </div>
 
           <div>

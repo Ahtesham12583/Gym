@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
+import fitnessHubLogo from '../assets/fitnesshub-logos.png';
 
 const menuItems = [
   { id: 'dashboard', label: 'Dashboard', icon: '📊', path: '/dashboard' },
@@ -13,20 +14,17 @@ const menuItems = [
   { id: 'settings', label: 'Settings', icon: '⚙️', path: '/dashboard?tab=settings' },
 ];
 
+
 const Logo = () => (
   <Link to="/" className="flex items-center gap-3 mb-10 px-2 group">
-    <div className="relative w-11 h-11 flex items-center justify-center border-2 border-amber rounded-lg 
-                    group-hover:shadow-amber transition-all duration-300 bg-dark-bg">
-      <svg viewBox="0 0 24 24" className="w-6 h-6 text-amber-light" fill="currentColor">
-        <path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43L16.29 22l2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43L22 16.29z"/>
-      </svg>
-    </div>
-    <div className="flex flex-col leading-none">
-      <span className="font-display text-xl font-bold tracking-wider text-white">FITNESS</span>
-      <span className="font-display text-lg font-bold tracking-[0.25em] amber-text -mt-0.5">HUB</span>
-    </div>
+    <img
+      src={fitnessHubLogo}
+      alt="Fitness Hub FH Logo"
+      className="w-12 h-12 object-contain transition-all duration-300 group-hover:scale-105"
+    />
   </Link>
 );
+
 
 const DashboardSidebar = ({ activeTab = 'dashboard' }) => {
   const [collapsed, setCollapsed] = useState(false);
@@ -47,15 +45,19 @@ const DashboardSidebar = ({ activeTab = 'dashboard' }) => {
         <div className={collapsed ? 'opacity-0 hidden' : ''}>
           <Logo />
         </div>
-        {collapsed && (
-          <div className="mb-10 flex justify-center">
-            <div className="w-11 h-11 flex items-center justify-center border-2 border-amber rounded-lg bg-dark-bg shadow-amber-sm">
-              <svg viewBox="0 0 24 24" className="w-6 h-6 text-amber-light" fill="currentColor">
-                <path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43L16.29 22l2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43L22 16.29z"/>
-              </svg>
-            </div>
-          </div>
-        )}
+        
+{collapsed && (
+  <div className="mb-10 flex justify-center">
+    <Link to="/" title="Fitness Hub Home">
+      <img
+        src={fitnessHubLogo}
+        alt="Fitness Hub FH Logo"
+        className="w-11 h-11 object-contain transition-transform duration-300 hover:scale-105"
+      />
+    </Link>
+  </div>
+)}
+
 
         {!collapsed && (
           <div className="mb-6 p-4 rounded-xl bg-gradient-to-br from-amber/10 via-dark-bg to-transparent border border-amber/20">
